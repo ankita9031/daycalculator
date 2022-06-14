@@ -1,27 +1,69 @@
 <template>
-  <Header title="Days Calculator"></Header>
-  <Datepicker  v-model="startdate" placeholder="Select Start Date"  utc />
-  <Datepicker v-model="enddate"  placeholder="Select End Date"  utc/>
-  <label>No of WeekDays : {{noOfWeekDays}}</label><br/>
-  <label>No of Business Days : {{noOfBusinessDays}}</label><br/>
-  <Datepicker  v-model="phDate" placeholder="Select Public Holiday date"  utc /> 
-  <button @click="addPublicHolidays()">Add Public Holiday</button>
-  <table>
-    <thead>
-      <tr>
-        <th>Public Holiday Date</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="(publicHoliday,index) in publicHolidays" :key="index">
-        <td>
-          {{publicHoliday}}
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <button @click="calculateNoOfDays()">Calculate WeekDays</button>
-  <button @click="calculateNoOfBusinessDays()">Calculate Business Days</button>
+  <div class="container-sm p-50 my-5">
+    <Header title="Days Calculator"></Header>
+    <div class="row">
+      <div class="col p-3" text-bold>
+       Start Date:
+       <Datepicker  v-model="startdate" placeholder="Select Start Date" :startTime="startTime" :enableTimePicker="false" utc />
+      </div>
+      <div class="col p-3">
+        <label>End Date:</label>
+        <Datepicker v-model="enddate"  placeholder="Select End Date" :startTime="startTime" :enableTimePicker="false" utc/>
+      </div>
+    </div>
+  
+    <div> 
+      <div class="row">
+        Add Public Holiday
+      </div>
+      <div class="row">
+        <Datepicker  v-model="phDate" placeholder="Select Public Holiday date" :startTime="startTime" :enableTimePicker="false"  utc /> 
+      </div>
+      <br/>
+      
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Public Holiday Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-if="this.publicHolidays.length == 0">
+            <td>"No public holiday added"</td>
+          </tr>
+          <tr v-for="(publicHoliday,index) in publicHolidays" :key="index">
+            <td>
+              {{new Date(publicHoliday)}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br/>
+      <div class="row">
+        <button class="btn btn-success" type="button"  @click="addPublicHolidays()" >
+          Add Public Holidays
+        </button>
+        <br/>
+      </div>
+    </div>
+    <br/><br/>
+
+<div class="row">
+  <div class="col">
+    <button @click="calculateNoOfDays()" class="btn btn-primary btn-md">Calculate WeekDays</button>
+  </div>
+   <div class="col">
+   <button @click="calculateNoOfBusinessDays()" class="btn btn-primary btn-md">Calculate Business Days</button>
+  </div>
+</div>
+    
+    
+    <br/>
+    <br/>
+    <label>No of WeekDays : {{noOfWeekDays}}</label><br/>
+    <label>No of Business Days : {{noOfBusinessDays}}</label><br/>
+  </div>
+  
  
 </template>
 
@@ -31,7 +73,8 @@ import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 const startdate = ref();
 const enddate = ref();
-const phDate = ref()
+const phDate = ref();
+const startTime = ref({ hours: 0, minutes: 0 });
 </script>
 
 <script>
@@ -76,7 +119,7 @@ export default {
         publicHolidays:this.publicHolidays.toString()
       }
   })
-  .then(response => (console.log(response))) 
+  .then(response => (this.noOfBusinessDays = response.data)) 
   .catch(function (error) {
     console.log(error);
   })
@@ -87,6 +130,7 @@ export default {
     addPublicHolidays(){
       if(this.phDate.length === 0) return;
       this.publicHolidays.push(this.phDate);
+      this.phDate = "";
     }
   }
 }
@@ -95,25 +139,12 @@ export default {
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  width:50%;
+  margin:auto;
+}
 
-}
-button{
- background-color: #04AA6D;
-  border: none;
-  color: white;
-  padding: 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  border-radius: 20px;
-}
 .dp__main {
   color: #1976d2;
   height: 40px;
