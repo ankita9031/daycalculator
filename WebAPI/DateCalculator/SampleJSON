@@ -1,0 +1,24 @@
+[
+  {
+    "name": "Anzac Day",
+    "date": "2022-04-25T00:00:00.000Z",
+    "isHolidayGuranteed": false,
+    "isSpecialHoliday": false
+  },
+   {
+    "name": "New Year",
+   "date": "2022-01-01T00:00:00.000Z",
+    "isHolidayGuranteed": true,
+    "isSpecialHoliday": false
+  }
+  , {
+    "name": "Queens Birthday",
+    "date": "2022-06-01T00:00:00.000Z",
+    "isHolidayGuranteed": false,
+    "isSpecialHoliday": true,
+    "specialPublicHoliday": {
+      "day": 1,
+      "occurence": 2
+    }
+  }
+]
