@@ -1,21 +1,21 @@
 <template>
     <div class="row">
-      <div class="col p-3" text-bold>
+      <div class="col">
        Start Date:
        <Datepicker  v-model="startdate" placeholder="Select Start Date" :startTime="startTime" :enableTimePicker="false" utc />
       </div>
-      <div class="col p-3">
+      <div class="col">
         <label>End Date:</label>
         <Datepicker v-model="enddate"  placeholder="Select End Date" :startTime="startTime" :enableTimePicker="false" utc/>
       </div>
     </div>
-  
     <div> 
+        <br/>
       <div class="row">
-        Add Public Holiday
-      </div>
-      <div class="row">
-        <Datepicker  v-model="phDate" placeholder="Select Public Holiday date" :startTime="startTime" :enableTimePicker="false"  utc /> 
+        <div class="col">
+             <label>Add Public Holiday :</label>
+             <Datepicker  v-model="phDate" placeholder="Select Public Holiday date" :startTime="startTime" :enableTimePicker="false"  utc /> 
+        </div>
       </div>
       <br/>
       
@@ -59,7 +59,6 @@
     <br/>
     <label>No of WeekDays : {{noOfWeekDays}}</label><br/>
     <label>No of Business Days : {{noOfBusinessDays}}</label><br/>
-
 </template>
 
 <script setup>
