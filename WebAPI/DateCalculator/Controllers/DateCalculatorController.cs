@@ -15,11 +15,16 @@ namespace DateCalculator.Controllers
         }
 
         [HttpGet("/GetWeekdays/")]
-        public int GetWeekdays(DateTime startDate, DateTime endDate)
+        public int GetWeekdays(string startDate, string endDate)
         {
+            if(string.IsNullOrEmpty(startDate) || string.IsNullOrEmpty(endDate))
+            {
+                throw new Exception("Start date and end date cannot be empty");
+            }
+
             try
             {
-                var noOfDays = _dayCalculatorService.WeekdaysBetweenTwoDates(startDate, endDate);
+                var noOfDays = _dayCalculatorService.WeekdaysBetweenTwoDates(Convert.ToDateTime(startDate), Convert.ToDateTime(endDate));
 
                 return noOfDays;
             }
@@ -30,9 +35,9 @@ namespace DateCalculator.Controllers
         }
 
         [HttpGet("/GetBusinessDaysWithPublicHolidayDates/")]
-        public int GetBusinessDays(DateTime startDate, DateTime endDate, string publicHolidays)
+        public int GetBusinessDays(string startDate, string endDate, string publicHolidays)
         {
-            if (string.IsNullOrWhiteSpace(publicHolidays))
+            if (string.IsNullOrEmpty(startDate) || string.IsNullOrEmpty(endDate) || string.IsNullOrWhiteSpace(publicHolidays))
             {
                 throw new Exception("Public Holidays List should not be empty");
             }
@@ -45,7 +50,7 @@ namespace DateCalculator.Controllers
                 {
                     publicHolidayDates.Add(Convert.ToDateTime(publicHoliday));
                 }
-                var noOfDays = _dayCalculatorService.BusinessDaysBetweenTwoDates(startDate, endDate, publicHolidayDates);
+                var noOfDays = _dayCalculatorService.BusinessDaysBetweenTwoDates(Convert.ToDateTime(startDate), Convert.ToDateTime(endDate), publicHolidayDates);
 
                 return noOfDays;
             }
@@ -56,9 +61,14 @@ namespace DateCalculator.Controllers
         }
 
         [HttpPost("/GetBusinessDaysWithPublicHolidays/")]
-        public int GetBusinessDays(DateTime startDate, DateTime endDate, [FromBody] IList<PublicHoliday> publicHolidays)
+        public int GetBusinessDays(string startDate, string endDate, [FromBody] IList<PublicHoliday> publicHolidays)
         {
-            var noOfDays = _dayCalculatorService.BusinessDaysBetweenTwoDates(startDate, endDate, publicHolidays);
+            if (string.IsNullOrEmpty(startDate) || string.IsNullOrEmpty(endDate))
+            {
+                throw new Exception("Start date and end date cannot be empty");
+            }
+
+            var noOfDays = _dayCalculatorService.BusinessDaysBetweenTwoDates(Convert.ToDateTime(startDate), Convert.ToDateTime(endDate), publicHolidays);
 
             return noOfDays;
         }
